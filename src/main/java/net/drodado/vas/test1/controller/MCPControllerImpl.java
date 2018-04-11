@@ -2,6 +2,9 @@ package net.drodado.vas.test1.controller;
 
 import static net.drodado.vas.test1.util.MCPUtils.prettyGson;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
+import net.drodado.vas.test1.Environment;
+import net.drodado.vas.test1.beans.MCPJsonFile;
 import net.drodado.vas.test1.beans.KPI;
 import net.drodado.vas.test1.beans.Metrics;
 import net.drodado.vas.test1.exceptions.MCPServiceException;
@@ -52,10 +57,16 @@ public class MCPControllerImpl implements MCPController {
     	if ( logger.isDebugEnabled() ) {
     		logger.debug("Entering HTTP endpoint (/test1/mcpfile/{date})...");
     	}
-    	
-    	String filename;
-    	try {
-    		filename = mcpService.mcpFileTreatment(date);
+  
+    	try {		
+    		final MCPJsonFile mCPJsonFile = mcpService.mcpFileTreatment(date);
+    		
+    		if ( logger.isDebugEnabled() ) {
+    			logger.debug("Exiting HTTP endpoint (/test1/mcpfile/{date}).");
+    		}
+    		
+    		return new ResponseEntity<String>(mCPJsonFile.toHttpResponse(), HttpStatus.OK);
+    		
     	} catch(MCPServiceException exception) {
 			if ( exception.getCause() instanceof HttpClientErrorException ) {
 				HttpClientErrorException clientErrorException = (HttpClientErrorException) exception.getCause();
@@ -66,13 +77,8 @@ public class MCPControllerImpl implements MCPController {
 						String.format("ERROR: %s", exception.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
     	}
-    	
-		if ( logger.isDebugEnabled() ) {
-			logger.debug("Exiting HTTP endpoint (/test1/mcpfile/{date}).");
-		}
-		
-		return new ResponseEntity<String>(String.format("File %s processed.", filename), filename != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
+    
     
     /**
      * HTTP endpoint (/test1/metrics) that returns a set of counters related with the processed JSON file.
@@ -117,5 +123,6 @@ public class MCPControllerImpl implements MCPController {
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
+
 
 }

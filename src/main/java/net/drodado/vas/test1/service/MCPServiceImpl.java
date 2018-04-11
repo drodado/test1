@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import net.drodado.vas.test1.Environment;
 import net.drodado.vas.test1.beans.KPI;
+import net.drodado.vas.test1.beans.MCPJsonFile;
 import net.drodado.vas.test1.beans.Metrics;
 import net.drodado.vas.test1.exceptions.MCPServiceException;
 import net.drodado.vas.test1.service.validator.AbstractJsonLineValidator.ValidationResume;
@@ -43,25 +44,27 @@ public class MCPServiceImpl extends AbstractMCPService {
 
 	
 	
-	private void init(String date) throws MCPServiceException {
-		this.metrics = new Metrics(buildFilename(date));
+	private void init(String filename) throws MCPServiceException {
+		this.metrics = new Metrics(filename);
 		MCPUtils.loadMSISDN();
 	}
 
+	
 	/**
 	 * Service to treat a MCP JSON file by date.
 	 * 
-	 * @param date
-	 *            Date to process a file.
-	 * @return Processed filename.
+	 * @param date Date forfile to be processed.
+	 * @return Processed content file.
 	 * @throws MCPServiceException 
 	 */
-	public String mcpFileTreatment(String date) throws MCPServiceException {
+	public MCPJsonFile mcpFileTreatment(String date) throws MCPServiceException {
 
 		final long start = System.currentTimeMillis();
 		
+		String filename = date;
 		try {
-			init(date);
+			filename = buildFilename(date);
+			init(filename);
 		} catch(Exception exception) {
 			logger.error(exception.getMessage());
 			throw new MCPServiceException(exception);
@@ -81,8 +84,7 @@ public class MCPServiceImpl extends AbstractMCPService {
 
 		updateKpis(duration);
 
-		return metrics.getFilename();
-
+		return new MCPJsonFile(jsonMessages, filename);
 	}
 	
 	
@@ -93,17 +95,6 @@ public class MCPServiceImpl extends AbstractMCPService {
 	}
 	
 	
-	private String buildFilename(String date) throws MCPServiceException {
-		try {
-			final String replacePttrn = "YYYYMMDD";
-			return Environment.getMCPFilenamePattern().replace(replacePttrn, date).concat(Environment.getMCPFileExternsion());
-		} catch(IOException exception) {
-			logger.error(exception.getLocalizedMessage());
-			throw new MCPServiceException(exception);
-		}
-	}
-	
-
 	private void updateStatistics(final ValidationResume validationResume) {
 
 		final MessageType messageType = MessageType.valueOf(validationResume.getProperty(CommonFields.MESSAGE_TYPE.getFieldName()).toUpperCase());
@@ -153,9 +144,16 @@ public class MCPServiceImpl extends AbstractMCPService {
 		kpis.increaseTotalNumberOfMessages();
 		if ("".equalsIgnoreCase(validationResume.getProperty(MsgFields.MESSAGE_CONTENT.getFieldName()).trim())) {
 			metrics.increaseNumberOfMessagesWithBlankContent();
+		} else {
+			for (RankingWords rankingWord : RankingWords.values()) {
+				if ( validationResume.getProperty(MsgFields.MESSAGE_CONTENT.getFieldName()).toUpperCase().contains(rankingWord.name())) {
+					metrics.increaseRankingWord(rankingWord);
+				}
+			}
 		}
 	}
 
+	
 	/**
 	 * Service to return a set of counters, metrics, related with a processed JSON
 	 * file.
@@ -169,6 +167,7 @@ public class MCPServiceImpl extends AbstractMCPService {
 		return this.metrics;
 	}
 
+	
 	/**
 	 * Service to return a set of counters, kpis, related with the service.
 	 * 
@@ -181,6 +180,7 @@ public class MCPServiceImpl extends AbstractMCPService {
 		return this.kpis;
 	}
 
+	
 	private String getMCPFileFromUrl(String filename) throws MCPServiceException {
 		try {
 			logger.info(String.format("Recovering file: %s", filename));
@@ -199,6 +199,7 @@ public class MCPServiceImpl extends AbstractMCPService {
 		}
 	}
 
+	
 	/**
 	 * Recovery and reading of a message file according to a date received as a
 	 * parameter.
@@ -266,8 +267,15 @@ public class MCPServiceImpl extends AbstractMCPService {
 
 		return validJSONLines;
 	}
-
 	
-
+	private String buildFilename(String date) throws MCPServiceException {
+		try {
+			final String replacePttrn = "YYYYMMDD";
+			return Environment.getMCPFilenamePattern().replace(replacePttrn, date).concat(Environment.getMCPFileExternsion());
+		} catch(IOException exception) {
+			logger.error(exception.getLocalizedMessage());
+			throw new MCPServiceException(exception);
+		}
+	}
 	
 }

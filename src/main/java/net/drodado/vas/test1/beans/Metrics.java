@@ -57,7 +57,7 @@ public class Metrics {
 	 */
 	private HashMap<String, Long> totalCallDurationGroupedByCountryCode = new HashMap<String, Long>();
 	
-	private Map<RankingWords, Integer> resultWordRanking = new HashMap<>();
+	private Map<RankingWords, Integer> rankingWords = new HashMap<>();
 
 	private String filename;
 	
@@ -66,7 +66,7 @@ public class Metrics {
 		super();
 		this.relationshipBetweenCalls = new RelationshipBetweenCalls();
 		for (RankingWords word: RankingWords.values()) {
-			resultWordRanking.put(word, 0);
+			rankingWords.put(word, 0);
 		}
 	}
 	
@@ -210,6 +210,7 @@ public class Metrics {
 		return getCountryCodes(numberOfCallsDestinationGroupedByCountryCode);
 	}
 	
+	
 	public Set<String> getCountryCodes(List<CallsNumberCountryCode> callsNumberCountryCodes) {
 		Set<String> result = new HashSet<>();
 		for(CallsNumberCountryCode aux : callsNumberCountryCodes) {
@@ -217,4 +218,10 @@ public class Metrics {
 		}
 		return result;
 	}
+	
+	
+	public void increaseRankingWord(RankingWords rankingWord) {
+		rankingWords.put(rankingWord, rankingWords.get(rankingWord).intValue()+1);
+	}
+	
 }

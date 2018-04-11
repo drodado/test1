@@ -12,7 +12,7 @@ The project is started with the main class net.drodado.vas.test1.RunService and 
 
 Date is a date parameter (YYYYMMDD) to request the JSON file to process. File is got from https://raw.githubusercontent.com/vas-test/test1/master/logs/MCP_YYYYMMDD.json
 
-This endpoint returns a message with the filename to confirm that file has been processed.
+This endpoint returns a message with the filename to confirm that file has been processed and the content file.
 
 If file is not found, service will return blank body and status "401 Not Found".
 
@@ -29,6 +29,7 @@ Service is not validating order fields.
 This endpoint returns a JSON message with the metrics info of the last file processed.
 
 ```
+
 {
   "numberOfRowsWithMissingFields": 0,
   "numberOfMessagesWithBlankContent": 17,
@@ -90,12 +91,12 @@ This endpoint returns a JSON message with the metrics info of the last file proc
     "34": 900,
     "49": 30
   },
-  "resultWordRanking": {
+  "rankingWords": {
+    "FINE": 1,
+    "YOU": 1,
+    "ARE": 1,
     "NOT": 0,
-    "HELLO": 0,
-    "ARE": 0,
-    "FINE": 0,
-    "YOU": 0
+    "HELLO": 7
   },
   "filename": "MCP_20180131.json"
 }
