@@ -1,3 +1,132 @@
+
+---------------------------------------------------------------------------------------------------
+
+CANDIDATE RESPONSE
+
+
+For the development of the test I have created a maven project with Spring Boot with the same name 'test1'. 
+
+The project is started with the main class net.drodado.vas.test1.RunService and the service has three HTTP endpoints:
+
+- GET /test1/mcpfile/{date}
+
+Date is a date parameter (YYYYMMDD) to request the JSON file to process. File is got from https://raw.githubusercontent.com/vas-test/test1/master/logs/MCP_YYYYMMDD.json
+
+This endpoint returns a message with the filename to confirm the file that has been processed.
+If there are errors in formatting, the service returns blank body and status "400 Bad Request".
+
+- GET /test1/metrics
+
+This endpoint returns a JSON message with the metrics info of the last file processed.
+
+```
+
+{
+  "numberOfRowsWithMissingFields": 0,
+  "numberOfMessagesWithBlankContent": 17,
+  "numberOfRowsWithFieldErrors": 5,
+  "numberOfCallsOriginGroupedByCountryCode": [
+    {
+      "countryCode": "34",
+      "countryDescr": "Spain",
+      "number": 6
+    },
+    {
+      "countryCode": "49",
+      "countryDescr": "Germany",
+      "number": 3
+    },
+    {
+      "countryCode": "44",
+      "countryDescr": "United Kingdom",
+      "number": 6
+    }
+  ],
+  "numberOfCallsDestinationGroupedByCountryCode": [
+    {
+      "countryCode": "34",
+      "countryDescr": "Spain",
+      "number": 6
+    },
+    {
+      "countryCode": "49",
+      "countryDescr": "Germany",
+      "number": 3
+    },
+    {
+      "countryCode": "44",
+      "countryDescr": "United Kingdom",
+      "number": 6
+    }
+  ],
+  "relationshipBetweenCalls": {
+    "ok": 10,
+    "ko": 5
+  },
+  "averageCallDurationGroupedByCountryCode": {
+    "44": {
+      "countryCode": "44",
+      "average": 10
+    },
+    "34": {
+      "countryCode": "34",
+      "average": 150
+    },
+    "49": {
+      "countryCode": "49",
+      "average": 10
+    }
+  },
+  "totalCallDurationGroupedByCountryCode": {
+    "44": 60,
+    "34": 900,
+    "49": 30
+  },
+  "resultWordRanking": {
+    "NOT": 0,
+    "HELLO": 0,
+    "ARE": 0,
+    "FINE": 0,
+    "YOU": 0
+  },
+  "filename": "MCP_20180131.json"
+}
+```
+
+- GET /test1/kpis
+
+This endpoint returns a JSON message with the accumulated KPIs info.
+
+```
+
+{
+  "totalNumberOfProcessedJSONFiles": 2,
+  "totalNumberOfRows": 58,
+  "totalNumberOfCalls": 20,
+  "totalNumberOfMessages": 20,
+  "totalNumberOfDifferentOriginCountryCodes": 3,
+  "originCountryCodes": [
+    "44",
+    "34",
+    "49"
+  ],
+  "totalNumberOfDifferentDestinationCountryCodes": 3,
+  "destinationCountryCodes": [
+    "44",
+    "34",
+    "49"
+  ],
+  "durationOfEachJSONProcess": [
+    451,
+    24
+  ]
+}
+```
+
+
+---------------------------------------------------------------------------------------------------
+
+
 The goal of this exercise is to create a service which exposes an API through which we will retrieve information related with certain Mobile Communication Platform. This information provided by the Mobile Communication Platform will be generated per day in separated files which will contain the following information in JSON format:
 
 - message_type: The type of the message. Two values are valid: {CALL|MSG}
@@ -71,28 +200,6 @@ There is an explicit ambiguity of some requirements so the candidate can freely 
 The candidate will share the URL to the source code when finished.
 
 
----------------------------------------------------------------------------------------------------
 
-CANDIDATE RESPONSE
-
-
-For the development of the test I have created a maven project with Spring Boot with the same name 'test1'. 
-
-The project is started with the main class net.drodado.vas.test1.RunService and the service has three HTTP endpoints:
-
-GET /test1/mcpfile/{date}
-
-Date is a date parameter (YYYYMMDD) to request the JSON file to process. File is got from https://raw.githubusercontent.com/vas-test/test1/master/logs/MCP_YYYYMMDD.json
-
-This endpoint returns a message with the filename to confirm the file that has been processed.
-If there are errors in formatting, the service returns blank body and status "400 Bad Request".
-
-GET /test1/metrics
-
-This endpoint returns a JSON message with the metrics info of the last file processed.
-
-GET /test1/kpis
-
-This endpoint returns a JSON message with the accumulated KPIs info.
 
 

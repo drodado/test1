@@ -75,7 +75,7 @@ public class MCPControllerImpl implements MCPController {
     }
     
     /**
-     * HTTP endpoint (/metrics) that returns a set of counters related with the processed JSON file.
+     * HTTP endpoint (/test1/metrics) that returns a set of counters related with the processed JSON file.
      * 
      * @return Metrics in JSON format.
      */
@@ -97,11 +97,11 @@ public class MCPControllerImpl implements MCPController {
     }
 	
     /**
-     * HTTP endpoint (/kpis) that returns a set of counters related with the service.
+     * HTTP endpoint (/test1/kpis) that returns a set of counters related with the service.
      * 
      * @return Metrics in JSON format.
      */
-    @RequestMapping(value = "/kpis", method = RequestMethod.GET)
+    @RequestMapping(value = "/test1/kpis", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> kpis() {
     	if ( logger.isDebugEnabled() ) {
