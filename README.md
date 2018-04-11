@@ -4,7 +4,7 @@
 CANDIDATE RESPONSE
 
 
-For the development of the test I have created a maven project with Spring Boot with the same name 'test1'. 
+For the development of the test I've created a maven project with Spring Boot and with the same name 'test1' of the original project. 
 
 The project is started with the main class net.drodado.vas.test1.RunService and the service has three HTTP endpoints:
 
@@ -12,15 +12,23 @@ The project is started with the main class net.drodado.vas.test1.RunService and 
 
 Date is a date parameter (YYYYMMDD) to request the JSON file to process. File is got from https://raw.githubusercontent.com/vas-test/test1/master/logs/MCP_YYYYMMDD.json
 
-This endpoint returns a message with the filename to confirm the file that has been processed.
-If there are errors in formatting, the service returns blank body and status "400 Bad Request".
+This endpoint returns a message with the filename to confirm that file has been processed.
+
+If file is not found, service will return blank body and status "401 Not Found".
+
+If an unhandled error occurs during the process, service will return an error message and status "500 Internal Server Error".
+
+If the line message does not have a valid JSON format, the line is discarded but it's considered in the row counter.
+
+Service is not validating order fields.
+
+• The JSON input may have some errors (missing fields, wrong order, invalid value ...)
 
 - GET /test1/metrics
 
 This endpoint returns a JSON message with the metrics info of the last file processed.
 
 ```
-
 {
   "numberOfRowsWithMissingFields": 0,
   "numberOfMessagesWithBlankContent": 17,
@@ -97,8 +105,8 @@ This endpoint returns a JSON message with the metrics info of the last file proc
 
 This endpoint returns a JSON message with the accumulated KPIs info.
 
-```
 
+```
 {
   "totalNumberOfProcessedJSONFiles": 2,
   "totalNumberOfRows": 58,

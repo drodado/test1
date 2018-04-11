@@ -23,6 +23,9 @@ public abstract class AbstractMCPService implements MCPService {
 		OK, KO;		
 	}
 	
+	/**
+	 * Words for occurrence ranking in message_content field.
+	 */
 	public enum RankingWords {
 		ARE, YOU, FINE, HELLO, NOT;	
 	}
