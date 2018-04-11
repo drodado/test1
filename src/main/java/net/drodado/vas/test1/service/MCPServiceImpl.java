@@ -70,7 +70,8 @@ public class MCPServiceImpl extends AbstractMCPService {
 			throw new MCPServiceException(exception);
 		}
 
-		final List<String> jsonMessages = getJsonFromFile(metrics.getFilename());
+		final MCPJsonFile mcpJsonFile = getJsonFromFile(metrics.getFilename());
+		final List<String> jsonMessages = mcpJsonFile.getValidJSONLines();
 		for (String jsonLine : jsonMessages) {
 			final ValidationResume validationResume = jsonLineValidator.validateFields(jsonLine, metrics);
 			if (validationResume.isValid()) {
@@ -84,7 +85,7 @@ public class MCPServiceImpl extends AbstractMCPService {
 
 		updateKpis(duration);
 
-		return new MCPJsonFile(jsonMessages, filename);
+		return mcpJsonFile;
 	}
 	
 	
@@ -209,7 +210,7 @@ public class MCPServiceImpl extends AbstractMCPService {
 	 * @return
 	 * @throws MCPServiceException
 	 */
-	private List<String> getJsonFromFile(String filename) throws MCPServiceException {
+	private MCPJsonFile getJsonFromFile(String filename) throws MCPServiceException {
 
 		if (logger.isDebugEnabled()) {
 			logger.debug(String.format("Recovering file [%s]...", filename));
@@ -217,15 +218,8 @@ public class MCPServiceImpl extends AbstractMCPService {
 
 		final String contentMCPFile = getMCPFileFromUrl(filename);
 
-		if (contentMCPFile == null) {
-			logger.error(String.format("File not found [%s]...", filename));
-			return null;
-		}
-
-		if (logger.isDebugEnabled()) {
-			logger.debug(String.format("File recovered [%s]...", filename));
-			logger.debug(String.format("File content:\n[%s]...", contentMCPFile));
-		}
+		logger.info(String.format("File recovered [%s]...", filename));
+		logger.info(String.format("File content:\n[%s]...", contentMCPFile));
 
 		kpis.increaseTotalNumberOfProcessedJSONFiles();
 
@@ -262,10 +256,10 @@ public class MCPServiceImpl extends AbstractMCPService {
 		}
 
 		logger.info(String.format("[%d] lines received.", lines.length));
-		logger.info(String.format("[%d] lines were valid.", validJSONLines.size()));
+		logger.info(String.format("[%d] lines were json valid.", validJSONLines.size()));
 		logger.info(String.format("[%d] lines were wrong and will not processed.", wrongJSONLines.size()));
 
-		return validJSONLines;
+		return new MCPJsonFile(lines, filename, validJSONLines, wrongJSONLines);
 	}
 	
 	private String buildFilename(String date) throws MCPServiceException {

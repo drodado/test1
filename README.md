@@ -22,6 +22,28 @@ If the line message does not have a valid JSON format, the line is discarded but
 
 Service is not validating order fields.
 
+```
+File MCP_20180201.json processed.
+
+{"message_type": "CALL","timestamp": 1517645700,"origin": 34969000001,"destination": 34969000101,"duration": 120,"status_code": "OK","status_description": "OK"}
+{"message_type": "CALL","timestamp": 1517645700,"origin": 34969000001,"destination": 34969000101,"duration": 120,"status_code": "OK","status_description": "OK"}
+{"message_type": "CALL","timestamp": 1517645700,"origin": 34969000001,"destination": 34969000101,"duration": 120,"status_code": "OK","status_description": "OK"}
+{"message_type": "CALL","timestamp": 1517732100,"origin": 34969000001,"destination": 34969000101,"duration": 180,"status_code": "OK","status_description": "OK"}
+{"message_type": "CALL","timestamp": 1517732100,"origin": 34969000001,"destination": 34969000101,"duration": 180,"status_code": "OK","status_description": "OK"}
+{"message_type": "MSG","timestamp": 1517562910,"origin": 34960000002,"destination": 34960000102,"message_content": "1. HELLO","message_status": ""}
+{"message_type": "MSG","timestamp": 1517562920,"origin": 34960000003,"destination": 34960000103,"message_content": "1. HELLO","message_status": "SEEN"}
+{"message_type": "MSG","timestamp": 1517562960,"origin": "","destination": 34960000001,"message_content": "1. HELLO","message_status": "DELI"}
+{"message_type": "MSG","timestamp": 1517563020,"origin": 34960000001,"destination": "","message_content": "1. HELLO","message_status": "DELI"}
+{"message_type": "MSG","timestamp": "","origin": 34960000001,"destination": 34960000001,"message_content": "1. HELLO","message_status": "DELI"}
+
+
+Processed lines resume:
+----------------------------------------------------------
+[10] lines received.
+[10] lines were json valid.
+[0] lines were wrong and will not processed.
+```
+
 • The JSON input may have some errors (missing fields, wrong order, invalid value ...)
 
 - GET /test1/metrics
@@ -29,7 +51,6 @@ Service is not validating order fields.
 This endpoint returns a JSON message with the metrics info of the last file processed.
 
 ```
-
 {
   "numberOfRowsWithMissingFields": 0,
   "numberOfMessagesWithBlankContent": 17,
