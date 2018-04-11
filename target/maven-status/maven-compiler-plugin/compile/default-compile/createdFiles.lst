@@ -1,0 +1,11 @@
+net\drodado\vas\test1\controller\MCPController.class
+net\drodado\vas\test1\exceptions\MCPServiceException.class
+net\drodado\vas\test1\service\MCPServiceImpl.class
+net\drodado\vas\test1\controller\MCPControllerImpl.class
+net\drodado\vas\test1\beans\MSISDN.class
+net\drodado\vas\test1\util\MCPUtils.class
+net\drodado\vas\test1\beans\KPI.class
+net\drodado\vas\test1\RunService.class
+net\drodado\vas\test1\Environment.class
+net\drodado\vas\test1\service\MCPService.class
+net\drodado\vas\test1\beans\Metrics.class
