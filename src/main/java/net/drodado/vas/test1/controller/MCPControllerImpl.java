@@ -41,16 +41,16 @@ public class MCPControllerImpl implements MCPController {
 	}
 	
     /**
-     * HTTP endpoint (/mcpfile/{date}) to process a MCP JSON file.
+     * HTTP endpoint (/test1/mcpfile/{date}) to process a MCP JSON file.
      * 
      * @return 
      */
-    @RequestMapping(value = "/mcpfile/{date}", method = RequestMethod.GET)
+    @RequestMapping(value = "/test1/mcpfile/{date}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> mcpFileTreatment(@PathVariable("date") String date) {
     	
     	if ( logger.isDebugEnabled() ) {
-    		logger.debug("Entering HTTP endpoint (/mcpfile/{date})...");
+    		logger.debug("Entering HTTP endpoint (/test1/mcpfile/{date})...");
     	}
     	
     	String filename;
@@ -68,7 +68,7 @@ public class MCPControllerImpl implements MCPController {
     	}
     	
 		if ( logger.isDebugEnabled() ) {
-			logger.debug("Exiting HTTP endpoint (/mcpfile/{date}).");
+			logger.debug("Exiting HTTP endpoint (/test1/mcpfile/{date}).");
 		}
 		
 		return new ResponseEntity<String>(String.format("File %s processed.", filename), filename != null ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
@@ -79,18 +79,18 @@ public class MCPControllerImpl implements MCPController {
      * 
      * @return Metrics in JSON format.
      */
-    @RequestMapping(value = "/metrics", method = RequestMethod.GET)
+    @RequestMapping(value = "/test1/metrics", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> metrics() {
     	if ( logger.isDebugEnabled() ) {
-    		logger.debug("Entering HTTP endpoint (/metrics)...");
+    		logger.debug("Entering HTTP endpoint (/test1/metrics)...");
     	}
     	
         final Metrics metrics = mcpService.metrics();
 		final String response = prettyGson(metrics);
 		
 		if ( logger.isDebugEnabled() ) {
-			logger.debug("Exiting HTTP endpoint (/metrics).");
+			logger.debug("Exiting HTTP endpoint (/test1/metrics).");
 		}
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
@@ -105,14 +105,14 @@ public class MCPControllerImpl implements MCPController {
     @ResponseBody
     public ResponseEntity<String> kpis() {
     	if ( logger.isDebugEnabled() ) {
-    		logger.debug("Entering HTTP endpoint (/kpis)...");
+    		logger.debug("Entering HTTP endpoint (/test1/kpis)...");
     	}
     	
         final KPI kpis = mcpService.kpis();
 		final String response = prettyGson(kpis);
 		
 		if ( logger.isDebugEnabled() ) {
-			logger.debug("Exiting HTTP endpoint (/kpis).");
+			logger.debug("Exiting HTTP endpoint (/test1/kpis).");
 		}
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);

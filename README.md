@@ -69,3 +69,30 @@ The service MUST implement the following requirements:
 There is an explicit ambiguity of some requirements so the candidate can freely interpret and elaborate in consequence. Also, all coding best practices applied will be appreciated.
 
 The candidate will share the URL to the source code when finished.
+
+
+---------------------------------------------------------------------------------------------------
+
+CANDIDATE RESPONSE
+
+
+For the development of the test I have created a maven project with Spring Boot with the same name 'test1'. 
+
+The project is started with the main class net.drodado.vas.test1.RunService and the service has three HTTP endpoints:
+
+GET /test1/mcpfile/{date}
+
+Date is a date parameter (YYYYMMDD) to request the JSON file to process. File is got from https://raw.githubusercontent.com/vas-test/test1/master/logs/MCP_YYYYMMDD.json
+
+This endpoint returns a message with the filename to confirm the file that has been processed.
+If there are errors in formatting, the service returns blank body and status "400 Bad Request".
+
+GET /test1/metrics
+
+This endpoint returns a JSON message with the metrics info of the last file processed.
+
+GET /test1/kpis
+
+This endpoint returns a JSON message with the accumulated KPIs info.
+
+
