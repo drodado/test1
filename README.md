@@ -14,11 +14,15 @@ Date is a date parameter (YYYYMMDD) to request the JSON file to process. File is
 
 This endpoint returns a message with the filename to confirm that file has been processed and the content file.
 
-If file is not found, service will return blank body and status "401 Not Found".
+If file is not found, service will return a blank body and status "401 Not Found".
 
 If an unhandled error occurs during the process, service will return an error message and status "500 Internal Server Error".
 
+Other return codes could be incorporated later.
+
 If the line message does not have a valid JSON format, the line is discarded but it's considered in the row counter.
+
+Rankings words are hardcode in an enumerated. They could also be read from a file to provide flexibility to change the set of words.
 
 Service is not validating order fields.
 
