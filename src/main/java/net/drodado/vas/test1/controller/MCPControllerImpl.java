@@ -2,9 +2,6 @@ package net.drodado.vas.test1.controller;
 
 import static net.drodado.vas.test1.util.MCPUtils.prettyGson;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
-import net.drodado.vas.test1.Environment;
-import net.drodado.vas.test1.beans.MCPJsonFile;
 import net.drodado.vas.test1.beans.KPI;
+import net.drodado.vas.test1.beans.MCPJsonFile;
 import net.drodado.vas.test1.beans.Metrics;
 import net.drodado.vas.test1.exceptions.MCPServiceException;
 import net.drodado.vas.test1.service.MCPService;
