@@ -24,6 +24,8 @@ If the line message does not have a valid JSON format, the line is discarded but
 
 Rankings words are hardcode in an enumerated. They could also be read from a file to provide flexibility to change the set of words.
 
+It has also included a test class with a few examples of implementation.
+
 Service is not validating order fields.
 
 ```
