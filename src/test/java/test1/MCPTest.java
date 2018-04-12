@@ -2,7 +2,6 @@ package test1;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import java.util.Properties;
 
@@ -12,10 +11,12 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 import net.drodado.vas.test1.beans.KPI;
+import net.drodado.vas.test1.beans.MCPJsonFile;
 import net.drodado.vas.test1.beans.MSISDN;
 import net.drodado.vas.test1.beans.Metrics;
 import net.drodado.vas.test1.controller.MCPController;
 import net.drodado.vas.test1.controller.MCPControllerImpl;
+import net.drodado.vas.test1.exceptions.MCPServiceException;
 import net.drodado.vas.test1.service.MCPService;
 import net.drodado.vas.test1.service.MCPServiceImpl;
 
@@ -38,12 +39,16 @@ public class MCPTest {
 		mcpController = new MCPControllerImpl(mcpService);
 	}
 
-//	@Test
-//	public void mcpFileTreatment() {
-//		final String date = "20180115";
-//		mcpService.mcpFileTreatment(date);
-//		verify(mcpService);
-//	}
+	@Test
+	public void mcpFileTreatment() {
+		final String date = "20180131";
+		try {
+			MCPJsonFile mcpJsonFile = mcpService.mcpFileTreatment(date);
+			assertEquals("MCP_20180131.json", mcpJsonFile.getFilename());
+		} catch(MCPServiceException exception) {
+			exception.printStackTrace();
+		}
+	}
 
 	/**
 	 * Test for serialization from a Metrics object to JSON.
@@ -54,8 +59,9 @@ public class MCPTest {
 		final Gson gson = new Gson();
 		final String representacionJSON = gson.toJson(metrics);
 		assertEquals("{\"numberOfRowsWithMissingFields\":0,\"numberOfMessagesWithBlankContent\":0,\"numberOfRowsWithFieldErrors\":0,"
-				+ "\"numberOfCallsOriginGroupedByCountryCode\":{},\"numberOfCallsDestinationGroupedByCountryCode\":{},"
-				+ "\"numberOfCallsOriginDestinationGroupedByCountryCode\":{},\"relationshipBetweenCalls\":0,\"averageCallDurationGroupedByCountryCode\":{}}"
+				+ "\"numberOfCallsOriginGroupedByCountryCode\":[],\"numberOfCallsDestinationGroupedByCountryCode\":[],"
+				+ "\"relationshipBetweenCalls\":{\"ok\":0,\"ko\":0},\"averageCallDurationGroupedByCountryCode\":{},"
+				+ "\"totalCallDurationGroupedByCountryCode\":{},\"rankingWords\":{\"FINE\":0,\"ARE\":0,\"NOT\":0,\"YOU\":0,\"HELLO\":0}}"
 				, representacionJSON);
 	}
 	
@@ -68,9 +74,9 @@ public class MCPTest {
 		final Gson gson = new Gson();
 		final String representacionJSON = gson.toJson(kpis);
 		assertEquals("{\"totalNumberOfProcessedJSONFiles\":0,\"totalNumberOfRows\":0,\"totalNumberOfCalls\":0,\"totalNumberOfMessages\":0,"
-				+ "\"totalNumberOfDifferentOriginCountryCodes\":0,\"totalNumberOfDifferentDestinationCountryCodes\":0,\"durationOfEachJSONProcess\":{}}"
+				+ "\"totalNumberOfDifferentOriginCountryCodes\":0,\"originCountryCodes\":[],\"totalNumberOfDifferentDestinationCountryCodes\":0,"
+				+ "\"destinationCountryCodes\":[],\"durationOfEachJSONProcess\":[]}"
 				, representacionJSON);
-		System.out.println(representacionJSON);
 	}
 	
 	/**
