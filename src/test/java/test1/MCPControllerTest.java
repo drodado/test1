@@ -7,6 +7,8 @@ import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.google.gson.Gson;
 
@@ -27,7 +29,7 @@ import net.drodado.vas.test1.service.MCPServiceImpl;
  * @author drodado
  *
  */
-public class MCPTest {
+public class MCPControllerTest {
 
 	private MCPController mcpController;
 
@@ -50,6 +52,13 @@ public class MCPTest {
 		}
 	}
 	
+	@Test
+	public void mcpController() {
+		final String date = "20180131";
+		final ResponseEntity<String> response = mcpController.mcpFileTreatment(date);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+	}
+
 	/**
 	 * Test for serialization from a Metrics object to JSON.
 	 */
