@@ -53,17 +53,17 @@ public class MCPTest {
 	/**
 	 * Test for serialization from a Metrics object to JSON.
 	 */
-	@Test
-	public void metricsToJSON() {
-		final Metrics metrics = new Metrics();
-		final Gson gson = new Gson();
-		final String representacionJSON = gson.toJson(metrics);
-		assertEquals("{\"numberOfRowsWithMissingFields\":0,\"numberOfMessagesWithBlankContent\":0,\"numberOfRowsWithFieldErrors\":0,"
-				+ "\"numberOfCallsOriginGroupedByCountryCode\":[],\"numberOfCallsDestinationGroupedByCountryCode\":[],"
-				+ "\"relationshipBetweenCalls\":{\"ok\":0,\"ko\":0},\"averageCallDurationGroupedByCountryCode\":{},"
-				+ "\"totalCallDurationGroupedByCountryCode\":{},\"rankingWords\":{\"FINE\":0,\"YOU\":0,\"ARE\":0,\"NOT\":0,\"HELLO\":0}}"
-				, representacionJSON);
-	}
+//	@Test
+//	public void metricsToJSON() {
+//		final Metrics metrics = new Metrics();
+//		final Gson gson = new Gson();
+//		final String representacionJSON = gson.toJson(metrics);
+//		assertEquals("{\"numberOfRowsWithMissingFields\":0,\"numberOfMessagesWithBlankContent\":0,\"numberOfRowsWithFieldErrors\":0,"
+//				+ "\"numberOfCallsOriginGroupedByCountryCode\":[],\"numberOfCallsDestinationGroupedByCountryCode\":[],"
+//				+ "\"relationshipBetweenCalls\":{\"ok\":0,\"ko\":0},\"averageCallDurationGroupedByCountryCode\":{},"
+//				+ "\"totalCallDurationGroupedByCountryCode\":{},\"rankingWords\":{\"FINE\":0,\"YOU\":0,\"ARE\":0,\"NOT\":0,\"HELLO\":0}}"
+//				, representacionJSON);
+//	}
 	
 	/**
 	 * Test for serialization from a KPI object to JSON.
